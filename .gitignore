@@ -1,4 +1,2 @@
 to-addresses.json
 email.env
-*.txt
-^requirements.txt

@@ -1,0 +1,31 @@
+#!/usr/py/python37/bin/python3
+
+# Google reference: https://support.google.com/mail/answer/7126229?visit_id=636933472854975930-1892577040&hl=pt-BR&rd=1
+
+import os, json, fileinput
+from dotenv import load_dotenv
+from smtplib import SMTP_SSL
+
+load_dotenv('./email.env')
+
+from_addr = os.getenv("EMAIL")
+password = os.getenv("PASSWORD")
+host = os.getenv("HOST")
+port = os.getenv("PORT")
+
+with open("to-addresses.json", "r") as addresses_file:
+	to_addresses = json.loads(addresses_file.read())
+
+#with open("body.txt", "r") as message_file:
+#	body_message = message_file.read()
+
+body_message = ""
+for line in fileinput.input():
+	body_message += line
+
+with SMTP_SSL(host=host, port=port) as smtp:
+	smtp.login(from_addr, password)
+
+	for to_addr in to_addresses:
+		print("Sending email to: %s" % (to_addr))
+		smtp.sendmail(from_addr, to_addr, body_message)
