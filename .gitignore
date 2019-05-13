@@ -1,2 +1,4 @@
 to-addresses.json
 email.env
+*.txt
+addresses
